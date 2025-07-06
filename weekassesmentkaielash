@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #91a03f;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .container {
+      margin-top: 60px;
+      background: #fff;
+      padding: 35px 45px;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      min-width: 350px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+      color: #124f6b;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+    }
+    .scores {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #22223b;
+    }
+    .play-btn {
+      display: block;
+      margin: 0 auto 30px auto;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .play-btn:hover {
+      background: #3730a3;
+    }
+    .choices {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 30px;
+    }
+    .choice-btn {
+      background: #e0e7ff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+    }
+    .choice-btn:hover {
+      background: #c7d2fe;
+      transform: scale(1.07);
+    }
+    .choice-btn img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 7px;
+      user-select: none;
+      pointer-events: none;
+    }
+    .results {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 18px;
+    }
+    .player-choice, .computer-choice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 90px;
+    }
+    .player-choice img, .computer-choice img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      border: 2px solid #a5b4fc;
+      background: #f1f5f9;
+      margin-bottom: 5px;
+    }
+    .result-message {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #4f46e5;
+      margin-bottom: 8px;
+      min-height: 28px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rock Paper Scissors</h1>
+    <div class="scores">
+      <span id="player1-score">Player 1: 0</span>
+      <span id="player2-score">Player 2: 0</span>
+    </div>
+    <button id="play-btn" class="play-btn">Play</button>
+    <div id="game-area" class="hidden">
+      <div class="choices">
+        <button class="choice-btn" data-choice="rock">
+          <img src="C:\Users\hp\Downloads\rock.png" alt="Rock">
+          Rock
+        </button>
+        <button class="choice-btn" data-choice="paper">
+          <img src="c:\Users\hp\Downloads\paper.png" alt="Paper">
+          Paper
+        </button>
+        <button class="choice-btn" data-choice="scissors">
+          <img src="C:\Users\hp\Downloads\scissor.jpg" alt="Scissors">
+          Scissors
+        </button>
+      </div>
+      <div class="results">
+        <div class="player-choice">
+          <img id="player-choice-img" src="" alt="" class="hidden">
+          <div>Player 1</div>
+        </div>
+        <div class="computer-choice">
+          <img id="computer-choice-img" src="" alt="" class="hidden">
+          <div>Player 2</div>
+        </div>
+      </div>
+      <div class="result-message" id="result-message"></div>
+    </div>
+  </div>
+  <script>
+    const playBtn = document.getElementById('play-btn');
+    const gameArea = document.getElementById('game-area');
+    const choiceBtns = document.querySelectorAll('.choice-btn');
+    const player1ScoreEl = document.getElementById('player1-score');
+    const player2ScoreEl = document.getElementById('player2-score');
+    const playerChoiceImg = document.getElementById('player-choice-img');
+    const computerChoiceImg = document.getElementById('computer-choice-img');
+    const resultMessage = document.getElementById('result-message');
+
+    let playerScore = 0;
+    let computerScore = 0;
+
+    const images = {
+      rock: "C:\Users\hp\Downloads\rock.png",
+      paper: "c:\Users\hp\Downloads\paper.png",
+      scissors: "C:\Users\hp\Downloads\scissor.jpg"
+    };
+
+    playBtn.addEventListener('click', () => {
+      playBtn.classList.add('hidden');
+      gameArea.classList.remove('hidden');
+      resultMessage.textContent = "";
+      playerChoiceImg.classList.add('hidden');
+      computerChoiceImg.classList.add('hidden');
+    });
+
+    choiceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const playerChoice = btn.getAttribute('data-choice');
+        const choices = ['rock', 'paper', 'scissors'];
+        const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+        // Show images
+        playerChoiceImg.src = images[playerChoice];
+        playerChoiceImg.alt = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
+        playerChoiceImg.classList.remove('hidden');
+
+        computerChoiceImg.src = images[computerChoice];
+        computerChoiceImg.alt = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
+        computerChoiceImg.classList.remove('hidden');
+
+        // Determine result
+        let result = "";
+        if (playerChoice === computerChoice) {
+          result = "It's a Draw!";
+        } else if (
+          (playerChoice === 'rock' && computerChoice === 'scissors') ||
+          (playerChoice === 'paper' && computerChoice === 'rock') ||
+          (playerChoice === 'scissors' && computerChoice === 'paper')
+        ) {
+          result = "Player 1 Wins!";
+          playerScore++;
+        } else {
+          result = "Player 2 Wins!";
+          computerScore++;
+        }
+        player1ScoreEl.textContent = `Player 1: ${playerScore}`;
+        player2ScoreEl.textContent = `Player 2: ${computerScore}`;
+        resultMessage.textContent = result;
+      });
+    });
+  </script>
+</body>
+</html>
